@@ -1,13 +1,24 @@
 import React from 'react';
-import { shallow, render } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import App from "../App";
 import { getRecipes } from "../components/Requests";
-import Recipe from "../components/Recipe";
 
 jest.mock('../Api');
 
 beforeEach(() => {
   jest.resetModules();
+});
+
+test('if state recipe updated with response from api', () => {
+  const app = mount(<App/>);
+  app.setState({search: 'meat'});
+  expect(app.state().search).toMatch('meat');
+  app.instance().getSearch({
+    preventDefault: () => {
+    }
+  });
+  app.update();
+  expect(app.state().recipes).toHaveLength(2);
 });
 
 test('if possible to get recipe from query', () => {
