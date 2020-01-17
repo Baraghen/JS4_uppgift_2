@@ -1,56 +1,56 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Recipe from "./components/Recipe";
+import { getRecipes } from "./components/Requests";
 import './App.css';
 
-const App = () => {
+class App extends React.Component {
 
-  const APP_ID = '3b89091e';
-  const APP_KEY = '5b1df4bbc8b61b7a17274cff8f495b44';
+  constructor(props) {
+    super(props);
 
-  const [recipes, setRecipes] = useState([]);
-  const [search, setSearch] = useState('');
-  const [query, setQuery] = useState('');
+      this.state = {
+        recipes: [],
+        search: '',
+      };
 
-  useEffect(() => {
-    getRecipes();
-  }, [query]);
+      this.updateSearch = this.updateSearch.bind(this);
+      this.getSearch = this.getSearch.bind(this);
+  }
 
-  const getRecipes = async () => {
-    const response = await fetch(`https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}`);
-    const data = await response.json();
-    setRecipes(data.hits);
+  updateSearch(e) {
+    this.setState({search: e.target.value})
   };
 
-  const updateSearch = e => {
-    setSearch(e.target.value);
-  };
-
-  const getSearch = e => {
+  getSearch(e) {
     e.preventDefault();
-    setQuery(search);
-    setSearch('');
+    getRecipes(this.state.search)
+      .then(results => {
+        this.setState({recipes: results})
+      })
+    this.setState({search: ''})
   };
 
-  return(
-    <div className="App">
-      <form onSubmit={getSearch} className="search-form">
-        <input className="search-bar" type="text" value={search} onChange={updateSearch}/>
-        <button className="search-button" type="search">
-          Search
-        </button>
-      </form>
-      <div className="recipes">
-      {recipes.map(recipe => (
-        <Recipe
-          key={recipe.recipe.label}
-          title={recipe.recipe.label}
-          image={recipe.recipe.image}
-          ingredients={recipe.recipe.ingredients}
-        />
-      ))}
+  render() {
+    return(
+      <div className="App">
+        <form onSubmit={this.getSearch} className="search-form">
+          <input className="search-bar" type="text" value={this.state.search} onChange={this.updateSearch}/>
+          <button className="search-button" type="search">
+            Search
+          </button>
+        </form>
+        <div className="recipes">
+        {this.state.recipes.map(recipe => (
+          <Recipe
+            title={recipe.recipe.label}
+            image={recipe.recipe.image}
+            ingredients={recipe.recipe.ingredients}
+          />
+        ))}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 };
 
 export default App;
