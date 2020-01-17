@@ -1,0 +1,49 @@
+{
+  "query": {
+    "more": true,
+    "hits": [
+      {
+        "recipe": {
+          "label": "Meat on a plate",
+          "image": "./src/assets/food.jpg",
+          "ingredients": [
+            {
+              "text": "8 meat things",
+              "weight": 344
+            },
+            {
+              "text": "2 vegetables",
+              "weight": 500
+            }
+          ]
+        }
+      },
+      {
+        "recipe": {
+          "label": "Something else on a plate",
+          "image": "./src/assets/food.jpg",
+          "ingredients": [
+            {
+              "text": "8 pasta things",
+              "weight": 344
+            },
+            {
+              "text": "2 vegetables",
+              "weight": 500
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "volumes": {
+    "items": [
+      {
+        "id" : 1,
+        "volumeInfo" : {
+          "title": "JavaScript: The Good Parts"
+        }
+      }
+    ]
+  }
+}
